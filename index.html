@@ -19,10 +19,11 @@
       </div>
   
   <h3>We filter our dataset by major</h3>
+      
+  <div id="majorTable"></div>
   
   </body>
 
- <!-- Handlebars template -->
   <script type="text/x-handlebars-template" id="tableTemplate">
       <table class="table table-striped">
           <tr><th>Name</th><th>Major</th><th>Midterm</th><th>Final</th></tr>
@@ -34,7 +35,6 @@
       </table>
   </script>
 
-  <!-- application ajax code -->
   <script>
 
   function getData(selected_major) {     
@@ -56,7 +56,7 @@
             document.getElementById('majorTable').innerHTML = compiledHtml; 
         }
         else {
-            document.querySelector('#majorTable').innerHTML = "There was an error, or menu items not found";
+            document.querySelector('#majorTable').innerHTML = "There was an error, or data not found";
         }
      }
      
