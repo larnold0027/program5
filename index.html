@@ -1,9 +1,8 @@
 <!DOCTYPE html><html>
 <head> <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>menu items</title>
+    <title>Students by Major</title>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.1.2/handlebars.min.js"></script>
-    <!-- bootstrap on github, need to use https for these links -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
@@ -13,29 +12,23 @@
 
 <body>
   <div class="container">
-      <h2>Select a Menu</h2>
+      <h2>Select a Major</h2>
       <div style='padding: 5px;'> 
-         <button type='button' class="btn btn-primary" onClick="getData('breakfast')">Breakfast</button> 
-         <button type='button' class="btn btn-primary" onClick="getData('lunch')">Lunch</button> 
-         <button type='button' class="btn btn-primary" onClick="getData('dinner')">Dinner</button> 
+         <button type='button' class="btn btn-primary" onClick="getData('CIT')">CIT Majors</button> 
+         <button type='button' class="btn btn-primary" onClick="getData('BUS')">Business Majors</button> 
       </div>
   
-  <h3>We filter our dataset by meal</h3>
-  <div id="menuTable"></div>
-      <p>Menu Data originally provided by  <a href='https://manual.cs50.net/api/food/'>manual.cs50.net/api/food/</a></p>
-      <p>Items are from HUDS, which is the Harvard University Dining Services. The above link is very old, and no longer leads 
-to information on the food API, and I can find no updated information on attribution.</p>
-      <p>CS 50 is a popular intro to computer science course offered by Harvard University.</p> 
-  </div>   <!-- end class='container'   -->
+  <h3>We filter our dataset by major</h3>
+  
   </body>
 
  <!-- Handlebars template -->
   <script type="text/x-handlebars-template" id="tableTemplate">
       <table class="table table-striped">
-          <tr><th>Item</th><th>Meal</th><th>Category</th><th>Portion</th></tr>
+          <tr><th>Name</th><th>Major</th><th>Midterm</th><th>Final</th></tr>
              {{#each rows}}
                 <tr>
-                     <td>{{name}}</td><td>{{meal}}</td><td>{{category}}</td><td>{{portion}}</td>
+                     <td>{{name}}</td><td>{{major}}</td><td>{{midterm}}</td><td>{{final}}</td>
                 </tr>
              {{/each}}
       </table>
@@ -44,26 +37,26 @@ to information on the food API, and I can find no updated information on attribu
   <!-- application ajax code -->
   <script>
 
-  function getData(selected_meal) {      // called when a button is clicked. paramter selected_meal = breakfast, lunch, or dinner
+  function getData(selected_major) {     
       var request = new XMLHttpRequest();
-      request.open('GET', 'menu_items.json');      // open Ajax request for data file menu_items.json
+      request.open('GET', 'CIT5students.json');      
  
-      request.onload = function() {                     // when the data comes back, browser calls this function
-         var data = JSON.parse(request.responseText);    // convert json to javascript array of objects
+      request.onload = function() {                     
+         var data = JSON.parse(request.responseText);    
 
-         meal_items = data.filter(getMeal)       // meal_itmes array will contain the filtered data using the getMeal() function
-         function getMeal(item) {
-            return item.meal == selected_meal;   // the new meal_items array will contain only items for the selected meal
+         major_items = data.filter(getMajor)       
+         function getMajor(item) {
+            return item.major == selected_major;   
          }
         
-        if (request.status == 200) {    // if all is well as data returns, then compile and populate the template
+        if (request.status == 200) {    
             var templateText = document.getElementById('tableTemplate').innerHTML;
             var compiledTemplateText = Handlebars.compile(templateText);       
-            compiledHtml = compiledTemplateText({ rows: meal_items })          
-            document.getElementById('menuTable').innerHTML = compiledHtml; 
+            compiledHtml = compiledTemplateText({ rows: major_items })          
+            document.getElementById('majorTable').innerHTML = compiledHtml; 
         }
         else {
-            document.querySelector('#menuTable').innerHTML = "There was an error, or menu items not found";
+            document.querySelector('#majorTable').innerHTML = "There was an error, or menu items not found";
         }
      }
      
